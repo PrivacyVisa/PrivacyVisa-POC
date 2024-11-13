@@ -60,38 +60,36 @@ function compileAndSetupCircuits() {
     runCommand('snarkjs zkey export verificationkey zkey/cardVerification/cardVerification01.zkey json/cardVerification/card_verification_verification_key.json');
 }
 // Function to run the setup phase and generate PI1, PI2, PI3
-async function runSetup() {
+async function runSetup(salt,cvc,cardnumber) {
     try {
-        const salt = "salt1234";
-        const cvc = "123";  // Example CVC
-        const cn = "1234567890123456"; // Example card number
+        // const salt = "salt1234";
+        // const cvc = "123";  // Example CVC
+        // const cn = "1234567890123456"; // Example card number
 
         const saltHashed = hashStringToBigInt(salt);
         const cvcHashed = hashStringToBigInt(cvc);
         console.log(
             {
-                "cardNumber": cn,
+                "cardNumber": cardnumber,
                 "salt": saltHashed,
                 "cvc": cvcHashed
             }
         )
         const { proof, publicSignals } = await snarkjs.groth16.fullProve(
             {
-                "cardNumber": cn,
+                "cardNumber": cardnumber,
                 "salt": saltHashed,
                 "cvc": cvcHashed
             },
             "cardSetup_js/cardSetup.wasm",
-            "cardSetup_0000.zkey"
-            // "cardSetup.wasm",
-            // "cardSetup_0000.zkey"
+            "zkey/cardSetup/cardSetup00.zkey"
         );
 
         console.log("Setup Public Signals (PI2, PI3):", publicSignals);
 
         // Write outputs to a file for later use in verification
-        fs.writeFileSync("setup_publicSignals.json", JSON.stringify(publicSignals));
-        fs.writeFileSync("setup_proof.json", JSON.stringify(proof));
+        fs.writeFileSync("json/CardSetup/setup_public.json", JSON.stringify(publicSignals));
+        fs.writeFileSync("json/CardSetup/setup_proof.json", JSON.stringify(proof));
         console.log("Setup public signals saved.");
     } catch (error) {
         console.error("Error in Setup Phase:", error);
@@ -159,10 +157,16 @@ async function runVerification() {
 
 async function main() {
     console.log("Running Compile and Setup Circuit:");
-    await compileAndSetupCircuits();
+    compileAndSetupCircuits();
 
     // console.log("Running Setup Phase:");
-    // await runSetup();
+    const payload = {
+        salt : "salt1234",
+        cvc : "123",
+        cardNumber : "1234567890123456"
+    }
+
+    await runSetup(payload.salt,payload.cvc,payload.cardNumber);
 
     // console.log("Running Verification Phase:");
     // await runVerification();
