@@ -1,1 +1,30 @@
-rm -rf setup.r1cs setup_js verification_js powersOfTau28_hez_final_12.ptau setup_0000.zkey setup_proof.json setup_publicSignals.json setup_verification_key.json setup.sym verification_0000.zkey verification_proof.json verification_publicSignals.json verification_verification_key.json verification.r1cs verification.sym cardSetup_js cardVerification_js cardSetup_0000.zkey cardSetup_proof.json cardSetup_public.json cardSetup_verification_key.json cardSetup_witness.wtns cardSetup.sym cardSetup.r1cs cardVerification_0000.zkey cardVerification_proof.json cardVerification_public.json cardVerification_verification_key.json cardVerification_witness.wtns cardVerification.r1cs cardVerification.sym powersOfTau28_hez_final_12.ptau setup_proof.json
+#!/bin/bash
+
+# Remove generated witness files
+rm -f witness/cardSetup/witness.wtns
+rm -f witness/cardVerification/witness.wtns
+
+# Remove compiled circuit files
+rm -f CardSetup.r1cs CardSetup.sym
+rm -f CardVerification.r1cs CardVerification.sym
+
+# Remove files in compile directories
+rm -rf compile/cardSetup
+rm -rf compile/cardVerification
+
+# Remove Power of Tau files
+rm -f pot/powersOfTau0000.ptau pot/powersOfTau0001.ptau pot/powersOfTauFinal.ptau
+
+# Remove zKey files
+rm -rf zkey/cardSetup/*
+rm -rf zkey/cardVerification/*
+
+# Remove exported verification keys
+rm -f json/CardSetup/card_setup_verification_key.json
+rm -f json/CardVerification/card_verification_verification_key.json
+
+# Additional cleanup if needed
+rm -f cardSetup_proof.json cardSetup_public.json
+rm -f cardVerification_proof.json cardVerification_public.json
+
+echo "All generated files and directories have been removed."
