@@ -272,11 +272,11 @@ function compileAndSetupCircuits() {
     // Export the verification keys
     runCommand('npx snarkjs zkey export verificationkey cardSetup_0000.zkey cardSetup_verification_key.json');
     runCommand('npx snarkjs zkey export verificationkey cardVerification_0000.zkey cardVerification_verification_key.json');
-    
+
 }
 
 // Start the server
 app.listen(PORT, () => {
-    // compileAndSetupCircuits();
+    compileAndSetupCircuits();
     console.log(`Bank server is running on port ${PORT}`);
 });

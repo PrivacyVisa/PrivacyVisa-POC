@@ -10,11 +10,12 @@ interface ICardVerifier {
      * @param _pubSignals The array of public input signals.
      * @return bool indicating whether the proof is valid or not.
      */
-     
+    
     function verifyProof(
         uint[2] calldata _pA,
         uint[2][2] calldata _pB,
         uint[2] calldata _pC,
         uint[2] calldata _pubSignals
     ) external view returns (bool);
+    
 }
