@@ -9,8 +9,8 @@ rm -f CardSetup.r1cs CardSetup.sym
 rm -f CardVerification.r1cs CardVerification.sym
 
 # Remove files in compile directories
-rm -rf compile/cardSetup
-rm -rf compile/cardVerification
+rm -rf compile/cardSetup/*
+rm -rf compile/cardVerification/*
 
 # Remove Power of Tau files
 rm -f pot/powersOfTau0000.ptau
