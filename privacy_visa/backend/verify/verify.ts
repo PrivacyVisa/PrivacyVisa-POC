@@ -3,7 +3,7 @@ import * as dotenv from "dotenv";
 import abi from "./abi.json"
 import { data } from "./card_verification.json"
 
-type Bytes32 = string;
+// console.log(abi)
 
 async function verify(
     contractAddress : string,
@@ -18,7 +18,6 @@ async function verify(
     if (!walletPrivateKey) {
         throw new Error("WALLET_PRIVATE_KEY is not defined in the environment variables.");
     }
-
     const wallet = new ethers.Wallet(walletPrivateKey,provider);
     const contract = new ethers.Contract(contractAddress, abi , wallet);
     const tx = await contract.verifyProof(pA,pB,pC,pubSignals) ;
@@ -29,6 +28,7 @@ const pa = data[0]
 const pb = data[1]
 const pc = data[2]
 const publicSig = data[3]
+
 console.log("pa : ",pa)
 console.log("pb : ",pb)
 console.log("pc : ",pc)

@@ -1,1 +1,16 @@
-["0x1e9528cd27f6967af62fad9601b055b42fd68a5b9e81b567e5a6c68e0bf34bac", "0x14ac3054f87692774af88f6a02ece0688d8f7081802a1946c3ab046f0e962c5d"],[["0x0e2ed49056df146440b29b3b29ab2af418b3d67e5bd968ce1b8ed1c65375fc71", "0x2634292505e627b2297779f5db0ef304852c7c16429c05c3c467b86b56950c42"],["0x167ca0664f8eeb81d5bb6b0215483021bf204599e4d74cba7e5e8ec4fd182a2b", "0x040d337458019ba42fbf1ef0a7364975829dafa4bc9fc6b416772e9c29ee729e"]],["0x1615144520fc8dd5e73ee7b2b2618890e193bfbce9a392dd810907b124237ce9", "0x29315c3d874af033ddfde264d4c31c0adc39a737f52eaca6c18e1cbf9cd311d6"],["0x0a295629f4df155d579f2714da4c7e47ebf2f1d79de41c7dc9a81c46feae439c","0x2eb026d514ecb68f084f81de3fdb82e8866c440a7eae33c8f664429c6ecc3dac"]
+[31;22m[ERROR] [39;1msnarkJS[0m: Error: ENOENT: no such file or directory, open 'json/CardVerification/card_verification_public.json'
+    at Object.readFileSync (node:fs:441:20)
+    at Object.zkeyExportSolidityCalldata [as action] (/opt/homebrew/lib/node_modules/snarkjs/build/cli.cjs:13116:51)
+    at clProcessor (/opt/homebrew/lib/node_modules/snarkjs/build/cli.cjs:483:37)
+    at Object.<anonymous> (/opt/homebrew/lib/node_modules/snarkjs/build/cli.cjs:12790:1)
+    at Module._compile (node:internal/modules/cjs/loader:1546:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1691:10)
+    at Module.load (node:internal/modules/cjs/loader:1317:32)
+    at Module._load (node:internal/modules/cjs/loader:1127:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:315:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24) {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'json/CardVerification/card_verification_public.json'
+}
