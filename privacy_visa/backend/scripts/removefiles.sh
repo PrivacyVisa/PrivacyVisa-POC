@@ -31,4 +31,7 @@ rm -f json/CardSetup/card_setup_proof.json
 rm -f json/CardVerification/card_verification_public.json
 rm -f json/CardVerification/card_verification_proof.json
 
+# Remove files in hardhat assets directory
+rm -f ../hardhat/assets/card_verification.json
+
 echo "All generated files and directories have been removed."

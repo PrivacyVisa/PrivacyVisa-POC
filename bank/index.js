@@ -232,7 +232,6 @@ app.post('/verify-transaction', async (req, res) => {
 
 // Function to recompute X using stored `pi3`, `tx`, and `nonce`
 async function computeVerificationHash(pia, tx, nonce) {
-
     // Prepare inputs for Poseidon hashing
     const inputArray = [
         pia,

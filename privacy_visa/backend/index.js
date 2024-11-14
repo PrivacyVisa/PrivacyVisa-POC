@@ -11,6 +11,15 @@ function hashStringToBigInt(input) {
     return BigInt('0x' + hash).toString();
 }
 
+async function textToJson(){
+    const destinationtxt = path.resolve(__dirname, 'generatecall','card_verification.txt');
+    const data = fs.readFileSync(destinationtxt);
+    const jsonData = { data: JSON.parse(`[${data}]`) };
+    // console.log('Converted JSON:', jsonData);
+    fs.writeFileSync('verify/card_verification.json',JSON.stringify(jsonData))
+}
+
+
 // Function to run shell commands
 function runCommand(command) {
     try {
@@ -149,6 +158,8 @@ async function runVerification() {
 
 async function generateCall(){
     runCommand("snarkjs generatecall json/CardVerification/card_verification_public.json json/CardVerification/card_verification_proof.json > generatecall/card_verification.txt");
+    textToJson()
+    // runCommand("snarkjs zkey export solidityverifier zkey/cardVerification/cardVerification01.zkey ../hardhat/contracts/cardVerification.sol");
 }
 
 async function main() {
