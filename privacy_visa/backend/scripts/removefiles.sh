@@ -13,7 +13,9 @@ rm -rf compile/cardSetup
 rm -rf compile/cardVerification
 
 # Remove Power of Tau files
-rm -f pot/powersOfTau0000.ptau pot/powersOfTau0001.ptau pot/powersOfTauFinal.ptau
+rm -f pot/powersOfTau0000.ptau
+rm -f pot/powersOfTau0001.ptau
+rm -f pot/powersOfTauFinal.ptau
 
 # Remove zKey files
 rm -rf zkey/cardSetup/*
@@ -23,8 +25,10 @@ rm -rf zkey/cardVerification/*
 rm -f json/CardSetup/card_setup_verification_key.json
 rm -f json/CardVerification/card_verification_verification_key.json
 
-# Additional cleanup if needed
-rm -f cardSetup_proof.json cardSetup_public.json
-rm -f cardVerification_proof.json cardVerification_public.json
+# Remove generated proof and public signal files
+rm -f json/CardSetup/card_setup_public.json
+rm -f json/CardSetup/card_setup_proof.json
+rm -f json/CardVerification/card_verification_public.json
+rm -f json/CardVerification/card_verification_proof.json
 
 echo "All generated files and directories have been removed."

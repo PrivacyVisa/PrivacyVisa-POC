@@ -88,8 +88,8 @@ async function runSetup(salt,cvc,cardnumber) {
         console.log("Setup Public Signals (PI2, PI3):", publicSignals);
 
         // Write outputs to a file for later use in verification
-        fs.writeFileSync("json/CardSetup/setup_public.json", JSON.stringify(publicSignals));
-        fs.writeFileSync("json/CardSetup/setup_proof.json", JSON.stringify(proof));
+        fs.writeFileSync("json/CardSetup/card_setup_public.json", JSON.stringify(publicSignals));
+        fs.writeFileSync("json/CardSetup/card_setup_proof.json", JSON.stringify(proof));
         console.log("Setup public signals saved.");
     } catch (error) {
         console.error("Error in Setup Phase:", error);
@@ -100,27 +100,21 @@ async function runSetup(salt,cvc,cardnumber) {
 async function runVerification() {
     try {
         // Retrieve expected PI1, PI2, PI3 from setup phase
-        const setupPublicSignals = JSON.parse(fs.readFileSync("setup_publicSignals.json"));
-        const expected_PI2 = setupPublicSignals[0];
-        const expected_PI3 = setupPublicSignals[1];
-        // const expected_PI1 = setupPublicSignals[0];
-        // const expected_PI2 = setupPublicSignals[1];
-        // const expected_PI3 = setupPublicSignals[2];
+        const cardSetupPublic = JSON.parse(fs.readFileSync("json/CardSetup/card_setup_public.json"));
+        const expected_PI2 = cardSetupPublic[0];
+        const expected_PI3 = cardSetupPublic[1];
+
         const salt = "salt1234";
-        const cvc = "123";  // Example CVC
-        const cn = "1234567890123456"; // Example card number
+        const cvc = "123";
+        const cn = "1234567890123456";
 
         const saltHashed = hashStringToBigInt(salt);
         const cvcHashed = hashStringToBigInt(cvc);
         const txHashed = hashStringToBigInt("order-001-amount-100");
         const nonceHashed = hashStringToBigInt("unique-nonce-value");
-
-        // Use PI1 from setup phase to simulate expected_PIB generation
-        // const expected_PIB = hashStringToBigInt(`${expected_PI1}${txHashed}${nonceHashed}`);
         console.log(
             {
-                "cardNumber": cn,
-                // "pi1": expected_PI1,
+                "cardNumber": cn,            
                 "pi2": expected_PI2,
                 "pi3": expected_PI3,
                 "cvc": cvcHashed,
@@ -131,8 +125,7 @@ async function runVerification() {
         )
         const { proof, publicSignals } = await snarkjs.groth16.fullProve(
             {
-                "cardNumber": cn,
-                // "pi1": expected_PI1,
+                "cardNumber": cn, 
                 "pi2": expected_PI2,
                 "pi3": expected_PI3,
                 "cvc": cvcHashed,
@@ -140,36 +133,41 @@ async function runVerification() {
                 "transaction": txHashed,
                 "nonce": nonceHashed,
             },
-            "cardVerification_js/cardVerification.wasm",
-            "cardVerification_0000.zkey"
+            "CardVerification_js/cardVerification.wasm",
+            "zkey/CardVerification/cardVerification00.zkey"
         );
-
         console.log("Verification Public Signals:", publicSignals);
 
         // Write outputs to a file for verification check
-        fs.writeFileSync("verification_proof.json", JSON.stringify(proof));
-        fs.writeFileSync("verification_publicSignals.json", JSON.stringify(publicSignals));
+        fs.writeFileSync("json/CardVerification/card_verification_proof.json", JSON.stringify(proof));
+        fs.writeFileSync("json/CardVerification/card_verification_public.json", JSON.stringify(publicSignals));
         console.log("Verification proof and public signals saved.");
     } catch (error) {
         console.error("Error in Verification Phase:", error);
     }
 }
 
+async function generateCall(){
+    runCommand("snarkjs generatecall json/CardVerification/card_verification_public.json json/CardVerification/card_verification_proof.json > generatecall/card_verification.txt");
+}
+
 async function main() {
     console.log("Running Compile and Setup Circuit:");
     compileAndSetupCircuits();
 
-    // console.log("Running Setup Phase:");
+    console.log("Running Card Setup Phase:");
     const payload = {
         salt : "salt1234",
         cvc : "123",
         cardNumber : "1234567890123456"
     }
-
     await runSetup(payload.salt,payload.cvc,payload.cardNumber);
 
-    // console.log("Running Verification Phase:");
-    // await runVerification();
+    console.log("Running Card Verification Phase after creating transaction and what to proof :");
+    await runVerification();
+
+    console.log("Prepare proof & public to verify onchain"); 
+    generateCall();
 }
 
 main().then(() => {
