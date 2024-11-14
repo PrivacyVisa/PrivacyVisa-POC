@@ -5,7 +5,7 @@ import { data } from "./card_verification.json"
 
 // console.log(abi)
 
-async function verify(
+export async function verify(
     contractAddress : string,
     pA: any,
     pB: any,
@@ -24,6 +24,6 @@ async function verify(
     return response
 }
 
-verify("0x75614c6E00fB4E7C2d7e84eB14f711C7351f058a",data[0],data[1],data[2],data[3]).catch((error)=>{
+const status = verify("0x75614c6E00fB4E7C2d7e84eB14f711C7351f058a",data[0],data[1],data[2],data[3]).catch((error)=>{
     console.log("Verify contract call error at : ",error)
 });
