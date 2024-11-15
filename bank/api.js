@@ -100,7 +100,7 @@ app.post('/store-setup', async (req, res) => {
 
 // 3. Endpoint to create a transaction order from shop initialize onchain
 app.post('/create-transaction', async (req, res) => {
-    const { transaction_hashed , amount , check_pi3} = req.body;
+    const { transaction_hashed , amount , check_pi3 } = req.body;
     // check that the user's card number is stored in cards offchain
     const certain_card = cardAndProof.find(card => card.pi3 === check_pi3);
     if (!certain_card) {
@@ -112,7 +112,7 @@ app.post('/create-transaction', async (req, res) => {
     const callData = {
         pi3: certain_card.pi3,
         transaction: transaction_hashed,
-        amount: amount
+        amount: 100
     };
     // Send callData intialize onchain with verifier router contract 
 
@@ -131,20 +131,23 @@ app.get('/user/request/card-verification', (req, res) => {
     ]);
 });
 
-
 // 5. Endpoint to check the transaction status
 app.get('/shop/check-transaction/:transaction_hashed', async (req, res) => {
     const { transaction_hashed } = req.params;
     // Querry transaction_hashed onchain and check is valid & onchain
-    // ongetStatusByTransactionHashed()
+    // OnGetTransactionInfo(transaction_hased)
+    const transactionInfo = {
+        status : 3,
+        amount : 100
+    }
     // interface on chain ITransactionStatus = {
     //     Unknown: 0,
     //     Pending: 1,
     //     Rejected: 2,
     //     Approved: 3
     // };
-    const transaction_status = 3; 
-    switch (transaction_status) {
+
+    switch (transactionInfo.status) {
         case ITransactionStatus.Unknown:
             res.status(400).json({ message: 'Transaction order does not exist', payload: "" });
             console.log("Transaction status is Unknown.");
@@ -158,6 +161,13 @@ app.get('/shop/check-transaction/:transaction_hashed', async (req, res) => {
             console.log("Transaction has been Rejected. Please check details.");
             break;
         case ITransactionStatus.Approved:
+            if (cardsDataBase[1].balance < transactionInfo.amount ){
+                res.status(400).json({ message: 'Tranaction succeed. But insufficient balance', payload: "" });
+                return;
+            }
+
+            cardsDataBase[0].balance -= transactionInfo.amount
+            cardsDataBase[1].balance += transactionInfo.amount
             res.status(200).json({ message: 'Tranaction succeed. Proof from user is valid', payload: "" });
             console.log("Transaction has been Approved!");
             break;
