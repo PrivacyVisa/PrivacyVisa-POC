@@ -67,11 +67,9 @@ contract BankVerifierRouter is Ownable {
         _nounce = walletToTransactionHashed[msg.sender].length ; 
     }
 
-    // Checking is transaction hashed status 
-    function checkTransactionValid (
-        string memory _transactionHashed
-    ) public view returns(EStatus){
-        return transactionHashedToDetails[_transactionHashed].status ; 
+    // Get transaction info by from transactionHashed
+    function getTransactionInfo(string memory transaction_hashed) public view returns( ITransactionInfo memory) { 
+        return transactionHashedToDetails[transaction_hashed] ; 
     }
 
     //Getting transactions for each user wallet
