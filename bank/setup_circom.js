@@ -4,14 +4,6 @@ const fs = require('fs');
 const { execSync } = require('child_process');
 const circomlibjs = require("circomlibjs");
 const crypto = require('crypto');
-const cors = require('cors');
-
-const app = express();
-
-app.use(cors());
-app.use(express.json());
-const PORT = 4000;
-
 
 // hash the number using SHA-256 and convert it to a BigInt-compatible format
 function hashNumberToBigInt(input) {
