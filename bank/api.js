@@ -1,9 +1,6 @@
 const express = require('express');
 
 const fs = require('fs');
-const { execSync } = require('child_process');
-const circomlibjs = require("circomlibjs");
-const crypto = require('crypto');
 const cors = require('cors');
 
 const app = express();
@@ -36,13 +33,6 @@ let cardsDataBase = [
 ];
 
 let cardAndProof = [];
-
-// hash the number using SHA-256 and convert it to a BigInt-compatible format
-function hashNumberToBigInt(input) {
-    const hash = crypto.createHash('sha256').
-        update(input.toString()).digest('hex');
-    return BigInt('0x' + hash).toString();
-}
 
 // // Endpoint to receive TX request from shop and generate nonce
 // app.get('/generate-nonce/:pi3', (req, res) => {
