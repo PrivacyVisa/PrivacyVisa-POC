@@ -16,7 +16,9 @@
     "circomlib": "^2.0.5",
     "circomlibjs": "^0.1.7",
     "cors": "^2.8.5",
-    "express": "^4.21.1",
+    "dotenv": "^16.4.5",
+    "ethers": "^6.13.4",
+    "express": "^5.0.1",
     "express-zip": "^3.0.0",
     "request": "^2.88.2",
     "snarkjs": "^0.7.5"
