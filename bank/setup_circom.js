@@ -12,20 +12,7 @@ function hashNumberToBigInt(input) {
     return BigInt('0x' + hash).toString();
 }
 
-// Function to recompute X using stored `pi3`, `tx`, and `nonce`
-async function computeVerificationHash(pia, tx, nonce) {
-    // Prepare inputs for Poseidon hashing
-    const inputArray = [
-        pia,
-        tx,
-        nonce
-    ];
-    // Generate X using Poseidon hash function
-    const poseidon = await circomlibjs.buildPoseidon();
-    const generatedX = poseidon.F.toString(poseidon(inputArray));
 
-    return generatedX;
-}
 
 // Function to run shell commands
 function runCommand(command) {
@@ -36,7 +23,7 @@ function runCommand(command) {
         console.error(`Error executing command: ${command}`, error);
     }
 }
-
+// setup witness circom
 function compileAndSetupCircuits() {
     runCommand('./removeFiles.sh');
 
@@ -59,9 +46,24 @@ function compileAndSetupCircuits() {
     // runCommand("snarkjs zkey export solidityverifier cardVerification_0000.zkey hardhat/contracts/CardVerifier.sol");
 }
 
-// Start the server
-app.listen(PORT, () => {
-    fs.readFileSync("hardhat/")
-    compileAndSetupCircuits();
-    console.log(`Bank server is running on port ${PORT}`);
-});
+// Function to recompute X using stored `pi3`, `tx`, and `nonce`
+async function computeVerificationHash(pia, tx, nonce) {
+    // Prepare inputs for Poseidon hashing
+    const inputArray = [
+        pia,
+        tx,
+        nonce
+    ];
+    // Generate X using Poseidon hash function
+    const poseidon = await circomlibjs.buildPoseidon();
+    const generatedX = poseidon.F.toString(poseidon(inputArray));
+
+    return generatedX;
+}
+
+function main(){
+    compileAndSetupCircuits()
+    computeVerificationHash()
+}
+
+main()
